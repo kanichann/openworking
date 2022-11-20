@@ -7,8 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model user {
+  id          Int     @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name        String  @db.VarChar(45)
+  email       String  @unique(map: "email_UNIQUE") @db.VarChar(45)
+  imageId     String  @unique(map: "uid_UNIQUE") @db.VarChar(45)
+  imageUrl    String  @db.Text()
+  avatorColor String? @db.VarChar(45)
+  password    String  @db.Text
 }

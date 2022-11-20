@@ -64,9 +64,6 @@ export class OpenworingServer {
   }
 
   private globalErrorHandler(app: Application): void {
-    // app.all('*', (req: Request, res: Response) => {
-    //     res.status(HTTP_STATUS.NOT_FOUND);
-    // })
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
       log.error(error);
       if (error instanceof CustomError) {
