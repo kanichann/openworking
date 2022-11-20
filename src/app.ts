@@ -1,14 +1,11 @@
 import { config } from './config';
-import { OpenworingServer } from './setupServer';
+import { OpenworingServer } from 'src/setupServer';
 import express, { Express } from 'express';
-import { prisma } from './setupDatabase';
+import { prismaConnection } from 'src/setupDatabase';
 
 class Application {
   public initialize(): void {
     this.loadConfig();
-    prisma.user.findMany().then((res) => {
-      console.log(res);
-    });
     const app: Express = express();
     const server: OpenworingServer = new OpenworingServer(app);
     server.start();
@@ -16,6 +13,7 @@ class Application {
 
   private loadConfig(): void {
     config.validateConfig();
+    config.cloudinaryConfig();
   }
 }
 
