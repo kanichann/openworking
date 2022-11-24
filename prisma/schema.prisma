@@ -8,11 +8,18 @@ datasource db {
 }
 
 model user {
-  id          Int     @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  name        String  @db.VarChar(45)
-  email       String  @unique(map: "email_UNIQUE") @db.VarChar(45)
-  imageId     String  @unique(map: "uid_UNIQUE") @db.VarChar(45)
-  imageUrl    String  @db.Text()
-  avatorColor String? @db.VarChar(45)
-  password    String  @db.Text
+  id              Int               @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name            String            @db.VarChar(45)
+  email           String            @unique(map: "email_UNIQUE") @db.VarChar(45)
+  imageId         String            @unique(map: "uid_UNIQUE") @db.VarChar(45)
+  imageUrl        String            @db.Text()
+  avatorColor     String?           @db.VarChar(45)
+  password        String            @db.Text
+  forget_password forget_password[]
+}
+
+model forget_password {
+  id        Int    @id
+  user      user   @relation(fields: [userEmail], references: [email])
+  userEmail String
 }

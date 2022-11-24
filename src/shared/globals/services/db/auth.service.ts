@@ -19,6 +19,7 @@ export class AuthService {
     };
   }
 
+
   public async checkUserExistByEmail(email: string): Promise<boolean> {
     let exist;
     try {
@@ -31,5 +32,19 @@ export class AuthService {
       exist = false;
     }
     return Boolean(exist);
+  }
+
+  public async getUserByEmail(email: string): (Promise<user | false>) {
+    let exist:user | false;
+    try {
+      exist =await prismaConnection.user.findUniqueOrThrow({
+        where: {
+          email:email
+        }
+      });
+    } catch (err){
+      exist = false;
+    }
+    return exist;
   }
 }
