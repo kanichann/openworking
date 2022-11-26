@@ -7,6 +7,8 @@ import { config } from 'src/config';
 import { Email } from 'src/shared/globals/services/email/Email';
 import fs from 'fs';
 import ejs from 'ejs';
+import PasswordHelper from 'src/shared/globals/helpers/password-helper';
+
 
 export class Password{
 
@@ -20,11 +22,31 @@ export class Password{
     console.log('randomBytes:',randomBytes);
     const randomCharacters: string = randomBytes.toString('hex');
     console.log('randomCharacters:', randomCharacters);
+
+    AuthService.prototype.updateTokenInUser(email, randomCharacters,  Date.now() + 60 * 60 );
+
     const resetLink = `${config.CLIENT_URL}/reset-password?token=${randomCharacters}`;
     const template: string = Password.prototype.resetEmailTemplate(exist.name, resetLink);
     await Email.prototype.submit(exist.email, template, 'パスワードのリセットについて。');
     res.status(HTTP_STATUS.OK).json({ message: 'Eメールを送信しました。' });
 
+  }
+
+  public async resetPassword(req:Request,res:Response) {
+    const { password, confirmPassword } = req.body;
+    if (password === confirmPassword) throw new BadRequestError('パスワードが一致していません。');
+    const { token } = req.params;
+
+    const passwordResetData = await AuthService.prototype.getTokenInUserByToken(token);
+
+    //token登録がなかった場合
+    if (!passwordResetData.token || !passwordResetData.tokenExpired) throw new BadRequestError('無効な資格情報です。');
+    if (passwordResetData.tokenExpired > Date.now()) throw new BadRequestError('有効期限が切れています。');
+
+    // passworのこうしん
+    const hashedPassword = PasswordHelper.prototype.hash(password);
+    await AuthService.prototype.updatePasswordInUserById(passwordResetData.id, hashedPassword);
+    res.status(HTTP_STATUS.OK).json({ message: 'パスワードを更新しました。' });
   }
 
   private resetEmailTemplate(username: string, resetUrl: string) {
@@ -33,5 +55,7 @@ export class Password{
       resetUrl,
       image_url: 'https://w7.pngwing.com/pngs/120/102/png-transparent-padlock-logo-computer-icons-padlock-technic-logo-password-lock.png'
     });
+
+
   }
 }

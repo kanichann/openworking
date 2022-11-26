@@ -22,6 +22,7 @@ export class Signup {
     const { password, name, email, avatorColor, avatorImage } = req.body;
     // 同じひとがいないか
     const exist = await AuthService.prototype.checkUserExistByEmail(email);
+    console.log(exist);
     if (exist) throw new BadRequestError('メールアドレスは既に利用されています。');
 
     //画像をCloudinaryに保存する
@@ -45,7 +46,7 @@ export class Signup {
       config.JWT_TOKEN!
     );
 
-    res.status(HTTP_STATUS.CREATED).json({ message: 'ログインに成功しました。', userToken:userJwt });//フロントで表示する必要のある情報も返す
+    res.status(HTTP_STATUS.CREATED).json({ message: '登録に成功しました。', userToken:userJwt });//フロントで表示する必要のある情報も返す
   };
 
 }

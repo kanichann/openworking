@@ -11,6 +11,8 @@ class Config {
   public SECRET_KEY_TWO: string | undefined;
   public CLIENT_URL: string | undefined;
   public REDIS_HOST: string | undefined;
+  public MAIL_USER: string | undefined;
+  public MAIL_PASSWORD: string | undefined;
   public SENDER_EMAIL: string | undefined;
   public SENDER_EMAIL_PASSWORD: string | undefined;
   public SENDGRID_API_KEY: string | undefined;
@@ -29,6 +31,8 @@ class Config {
     this.CLOUD_NAME = process.env.CLOUD_NAME || this.CLOUD_NAME;
     this.CLOUD_API_KEY = process.env.CLOUD_API_KEY || this.CLOUD_API_KEY;
     this.CLOUD_API_SECRET = process.env.CLOUD_API_SECRET || this.CLOUD_API_SECRET;
+    this.MAIL_USER = process.env.MAIL_USER || this.MAIL_USER;
+    this.MAIL_PASSWORD = process.env.MAIL_PASSWORD || this.MAIL_PASSWORD;
     // this.JWT_TOKEN = process.env.JWT_TOKEN || this.JWT_TOKEN;
   }
 
