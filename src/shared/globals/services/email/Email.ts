@@ -16,12 +16,21 @@ export class Email {
   }
 
   private async developmentEmailSubmit(email: string, template: string, subject: string) {
-    const transporter:Mail = nodemailer.createTransport({
-      host: 'localhost',
-      port: 25,
-      secure: false, // true for 465, false for other ports
+    // const transporter:Mail = nodemailer.createTransport({
+    //   host: 'localhost',
+    //   port: 25,
+    //   secure: false, // true for 465, false for other ports
 
-    });
+    // });
+    const transporter:Mail = nodemailer.createTransport({
+      port: 465,
+      host: 'smtp.gmail.com',
+      auth: {
+          user: config.MAIL_USER,
+          pass: config.MAIL_PASSWORD,
+      },
+      secure: true,
+  });
     const mailOptions = {
       from: `OpenWorker <${config.SENDER_EMAIL!}>`,
       to: email,
